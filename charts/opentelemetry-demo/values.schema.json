@@ -159,6 +159,10 @@
             "$ref": "#/definitions/Env"
           }
         },
+        "booger": {
+          "type": "object",
+          "items": {}
+        },
         "command": {
           "type": "array",
           "items": {}

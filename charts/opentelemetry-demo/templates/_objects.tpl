@@ -40,7 +40,15 @@ spec:
       {{- end }}
       containers:
         - name: {{ .name }}
+          {{- if .booger}}
+          image: "{{ .booger.image}}"
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+          {{- else }}
           image: '{{ ((.imageOverride).repository) | default .defaultValues.image.repository }}:{{ ((.imageOverride).tag) | default (printf "%s-%s" (default .Chart.AppVersion .defaultValues.image.tag) (replace "-" "" .name)) }}'
+          {{- end }}
+
           imagePullPolicy: {{ ((.imageOverride).pullPolicy) | default .defaultValues.image.pullPolicy }}
           {{- if .command }}
           command:

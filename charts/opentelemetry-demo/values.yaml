@@ -127,7 +127,7 @@ components:
   #       image: <init-container-image>
   #       command: [list of commands for the init container to run]
   accountingService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     env:
@@ -144,7 +144,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-kafka 9092; do echo waiting for kafka; sleep 2; done;']
 
   adService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -163,7 +163,7 @@ components:
         memory: 300Mi
 
   cartService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -188,7 +188,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-redis 6379; do echo waiting for redis; sleep 2; done;']
 
   checkoutService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -221,7 +221,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-kafka 9092; do echo waiting for kafka; sleep 2; done;']
 
   currencyService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -236,7 +236,7 @@ components:
         memory: 20Mi
 
   emailService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -253,7 +253,7 @@ components:
         memory: 100Mi
 
   featureflagService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     ports:
@@ -287,7 +287,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-ffspostgres 5432; do echo waiting for ffspostgres; sleep 2; done']
 
   frauddetectionService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     env:
@@ -304,7 +304,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-kafka 9092; do echo waiting for kafka; sleep 2; done;']
 
   frontend:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -343,7 +343,7 @@ components:
       runAsNonRoot: true
 
   frontendProxy:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -386,7 +386,7 @@ components:
       runAsNonRoot: true
 
   loadgenerator:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -414,6 +414,13 @@ components:
 
   paymentService:
     enabled: true
+    booger:
+      imageA: "ubuntu:latest"
+      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04_X"
+      imageC: "docker.io/chgray123/chgray_repro:dev20.04"
+      imageB: "docker.io/library/nginx:latest"
+    command: ['sh', '-c', 'sleep 100000000']
+
     useDefault:
       env: true
     service:
@@ -432,7 +439,7 @@ components:
       runAsNonRoot: true
 
   productCatalogService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -449,7 +456,7 @@ components:
         memory: 20Mi
 
   quoteService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -470,7 +477,7 @@ components:
       runAsNonRoot: true
 
   recommendationService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -493,7 +500,7 @@ components:
         memory: 500Mi            # This is high to enable supporting the recommendationCache feature flag use case
 
   shippingService:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     service:
@@ -510,7 +517,7 @@ components:
         memory: 20Mi
 
   ffsPostgres:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     imageOverride:
@@ -535,7 +542,7 @@ components:
       runAsNonRoot: true
 
   kafka:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     ports:
@@ -559,7 +566,7 @@ components:
       runAsNonRoot: true
 
   redis:
-    enabled: true
+    enabled: false
     useDefault:
       env: true
     imageOverride:
@@ -577,12 +584,12 @@ components:
       runAsNonRoot: true
 
 opentelemetry-collector:
-  enabled: true
+  enabled: false
   nameOverride: otelcol
   mode: deployment
   presets:
     kubernetesAttributes:
-      enabled: true
+      enabled: false
   resources:
     limits:
       memory: 200Mi
@@ -590,9 +597,9 @@ opentelemetry-collector:
     type: ClusterIP
   ports:
     metrics:
-      enabled: true
+      enabled: false
     prometheus:
-      enabled: true
+      enabled: false
       containerPort: 9464
       servicePort: 9464
       protocol: TCP
@@ -664,11 +671,11 @@ opentelemetry-collector:
           exporters: [otlphttp/prometheus, debug]
 
 jaeger:
-  enabled: true
+  enabled: false
   provisionDataStore:
     cassandra: false
   allInOne:
-    enabled: true
+    enabled: false
     args:
       - "--memory.max-traces"
       - "8000"
@@ -692,7 +699,7 @@ jaeger:
     enabled: false
 
 prometheus:
-  enabled: true
+  enabled: false
   alertmanager:
     enabled: false
   configmapReload:
@@ -736,12 +743,12 @@ prometheus:
               regex: true
 
 grafana:
-  enabled: true
+  enabled: false
   grafana.ini:
     auth:
       disable_login_form: true
     auth.anonymous:
-      enabled: true
+      enabled: false
       org_name: Main Org.
       org_role: Admin
     server:
