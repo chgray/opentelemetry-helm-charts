@@ -416,8 +416,8 @@ components:
     enabled: true
     booger:
       imageA: "ubuntu:latest"
-      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04_X"
-      imageC: "docker.io/chgray123/chgray_repro:dev20.04"
+      imageA: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
+      image: "docker.io/chgray123/chgray_repro:dev20.04"
       imageB: "docker.io/library/nginx:latest"
     command: ['sh', '-c', 'sleep 100000000']
 
