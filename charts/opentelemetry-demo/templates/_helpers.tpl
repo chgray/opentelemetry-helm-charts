@@ -16,6 +16,7 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "otel-demo.labels" -}}
+azure.workload.identityuse: "true"
 helm.sh/chart: {{ include "otel-demo.chart" . }}
 {{ include "otel-demo.selectorLabels" . }}
 {{ include "otel-demo.workloadLabels" . }}

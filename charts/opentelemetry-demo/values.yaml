@@ -414,11 +414,16 @@ components:
 
   paymentService:
     enabled: true
+    #metadata:
+      #labels:
+      #  azure.workload.identity/use
     booger:
+      serviceAccountName: workload-identity-sa
       imageA: "ubuntu:latest"
-      imageA: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
-      image: "docker.io/chgray123/chgray_repro:dev20.04"
-      imageB: "docker.io/library/nginx:latest"
+      imageX: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
+      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
+      imageB: "docker.io/chgray123/chgray_repro:dev20.04"
+      imageC: "docker.io/library/nginx:latest"
     command: ['sh', '-c', 'sleep 100000000']
 
     useDefault:
@@ -433,10 +438,13 @@ components:
     resources:
       limits:
         memory: 120Mi
-    securityContext:
-      runAsUser: 1000  # node
-      runAsGroup: 1000
-      runAsNonRoot: true
+ #   securityContext:
+ #     privileged: true
+ #     runAsUser: 1000  # node
+ #     runAsGroup: 1000
+ #     runAsNonRoot: true
+
+
 
   productCatalogService:
     enabled: false
