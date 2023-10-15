@@ -7,7 +7,7 @@ default:
           apiVersion: v1
           fieldPath: "metadata.labels['app.kubernetes.io/component']"
     - name: OTEL_COLLECTOR_NAME
-      value: '{{ include "otel-demo.name" . }}-otelcol'
+      value: '192.168.7.86'
     - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       value: cumulative
     - name: OTEL_RESOURCE_ATTRIBUTES
@@ -127,7 +127,7 @@ components:
   #       image: <init-container-image>
   #       command: [list of commands for the init container to run]
   accountingService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     env:
@@ -144,7 +144,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-kafka 9092; do echo waiting for kafka; sleep 2; done;']
 
   adService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -163,7 +163,7 @@ components:
         memory: 300Mi
 
   cartService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -188,7 +188,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-redis 6379; do echo waiting for redis; sleep 2; done;']
 
   checkoutService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -221,7 +221,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-kafka 9092; do echo waiting for kafka; sleep 2; done;']
 
   currencyService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -236,7 +236,7 @@ components:
         memory: 20Mi
 
   emailService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -253,7 +253,7 @@ components:
         memory: 100Mi
 
   featureflagService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     ports:
@@ -287,7 +287,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-ffspostgres 5432; do echo waiting for ffspostgres; sleep 2; done']
 
   frauddetectionService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     env:
@@ -304,7 +304,7 @@ components:
         command: ['sh', '-c', 'until nc -z -v -w30 {{ include "otel-demo.name" . }}-kafka 9092; do echo waiting for kafka; sleep 2; done;']
 
   frontend:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -343,7 +343,7 @@ components:
       runAsNonRoot: true
 
   frontendProxy:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -386,7 +386,7 @@ components:
       runAsNonRoot: true
 
   loadgenerator:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -413,15 +413,19 @@ components:
         memory: 120Mi
 
   paymentService:
-    enabled: true
+    enabled: false
     #metadata:
       #labels:
       #  azure.workload.identity/use
     booger:
       serviceAccountName: workload-identity-sa
       imageA: "ubuntu:latest"
+      image: "localhost:32000/ubuntu.hi:latest"
+      
+      
+      imageZ: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageX: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
-      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
+      imageY: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageB: "docker.io/chgray123/chgray_repro:dev20.04"
       imageC: "docker.io/library/nginx:latest"
     command: ['sh', '-c', 'sleep 100000000']
@@ -447,7 +451,7 @@ components:
 
 
   productCatalogService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -464,7 +468,7 @@ components:
         memory: 20Mi
 
   quoteService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -485,7 +489,7 @@ components:
       runAsNonRoot: true
 
   recommendationService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -508,7 +512,7 @@ components:
         memory: 500Mi            # This is high to enable supporting the recommendationCache feature flag use case
 
   shippingService:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     service:
@@ -525,7 +529,7 @@ components:
         memory: 20Mi
 
   ffsPostgres:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     imageOverride:
@@ -550,7 +554,7 @@ components:
       runAsNonRoot: true
 
   kafka:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     ports:
@@ -574,7 +578,7 @@ components:
       runAsNonRoot: true
 
   redis:
-    enabled: false
+    enabled: true
     useDefault:
       env: true
     imageOverride:
