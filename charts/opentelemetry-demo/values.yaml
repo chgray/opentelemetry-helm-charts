@@ -7,7 +7,7 @@ default:
           apiVersion: v1
           fieldPath: "metadata.labels['app.kubernetes.io/component']"
     - name: OTEL_COLLECTOR_NAME
-      value: '{{ include "otel-demo.name" . }}-otelcol'
+      value: '172.30.241.217'
     - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       value: cumulative
     - name: OTEL_RESOURCE_ATTRIBUTES
@@ -577,7 +577,7 @@ components:
       runAsNonRoot: true
 
 opentelemetry-collector:
-  enabled: true
+  enabled: false
   nameOverride: otelcol
   mode: deployment
   presets:
@@ -664,7 +664,7 @@ opentelemetry-collector:
           exporters: [otlphttp/prometheus, debug]
 
 jaeger:
-  enabled: true
+  enabled: false
   provisionDataStore:
     cassandra: false
   allInOne:
@@ -692,7 +692,7 @@ jaeger:
     enabled: false
 
 prometheus:
-  enabled: true
+  enabled: false
   alertmanager:
     enabled: false
   configmapReload:
@@ -736,7 +736,7 @@ prometheus:
               regex: true
 
 grafana:
-  enabled: true
+  enabled: false
   grafana.ini:
     auth:
       disable_login_form: true
