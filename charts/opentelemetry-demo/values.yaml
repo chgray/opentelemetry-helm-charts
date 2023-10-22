@@ -413,16 +413,16 @@ components:
         memory: 120Mi
 
   paymentService:
-    enabled: false
+    enabled: true
     #metadata:
       #labels:
       #  azure.workload.identity/use
     booger:
+      # helm install blah .  --namespace default --set serviceAccount.create=false --set serviceAccount.name=workload-identity-sa
       serviceAccountName: workload-identity-sa
       imageA: "ubuntu:latest"
-      image: "localhost:32000/ubuntu.hi:latest"
-      
-      
+      imageD: "localhost:32000/ubuntu.hi:latest"
+      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.3"
       imageZ: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageX: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
       imageY: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
@@ -441,7 +441,7 @@ components:
         value: http://$(OTEL_COLLECTOR_NAME):4317
     resources:
       limits:
-        memory: 120Mi
+        memory: 520Mi
  #   securityContext:
  #     privileged: true
  #     runAsUser: 1000  # node
