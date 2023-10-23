@@ -88,6 +88,9 @@
         "loadgenerator": {
           "$ref": "#/definitions/Component"
         },
+        "lookoutTower": {
+          "$ref": "#/definitions/Component"
+        },
         "paymentService": {
           "$ref": "#/definitions/Component"
         },
