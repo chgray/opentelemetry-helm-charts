@@ -412,7 +412,6 @@ components:
       limits:
         memory: 120Mi
 
-
   lookoutTower:
     enabled: true
     #metadata:
@@ -446,24 +445,7 @@ components:
         memory: 1024Mi
 
   paymentService:
-    enabled: false
-    #metadata:
-      #labels:
-      #  azure.workload.identity/use
-    booger:
-      # helm install blah .  --namespace default --set serviceAccount.create=false --set serviceAccount.name=workload-identity-sa
-      serviceAccountName: workload-identity-sa
-      imageA: "ubuntu:latest"
-      imageB: "localhost:32000/ubuntu.hi:latest"
-      imageC: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.3"
-      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.4"
-      imageD: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
-      imageE: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
-      imageF: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
-      imageG: "docker.io/chgray123/chgray_repro:dev20.04"
-      imageA: "docker.io/library/nginx:latest"
-    command: ['sh', '-c', '/LookoutTower/LookoutTowerCollector']
-
+    enabled: true
     useDefault:
       env: true
     service:
@@ -475,14 +457,11 @@ components:
         value: http://$(OTEL_COLLECTOR_NAME):4317
     resources:
       limits:
-        memory: 1024Mi
- #   securityContext:
- #     privileged: true
- #     runAsUser: 1000  # node
- #     runAsGroup: 1000
- #     runAsNonRoot: true
-
-
+        memory: 120Mi
+    securityContext:
+      runAsUser: 1000  # node
+      runAsGroup: 1000
+      runAsNonRoot: true
 
   productCatalogService:
     enabled: true
