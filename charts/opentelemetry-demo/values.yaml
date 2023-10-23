@@ -6,8 +6,18 @@ default:
         fieldRef:
           apiVersion: v1
           fieldPath: "metadata.labels['app.kubernetes.io/component']"
-    - name: OTEL_COLLECTOR_NAME
+    - name: X_OTEL_COLLECTOR_NAME
+      value: '10.17.164.217'
+
+    - name: X_OTEL_COLLECTOR_NAME
       value: '{{ include "otel-demo.name" . }}-lookoutTower'
+
+    - name: OTEL_COLLECTOR_PORT_GRPC
+      value: "14317"
+
+
+    - name: OTEL_EXPORTER_CHAINED_NAME
+      value: '{{ include "otel-demo.name" . }}-otelcol'
     - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       value: cumulative
     - name: OTEL_RESOURCE_ATTRIBUTES
@@ -134,7 +144,7 @@ components:
       - name: KAFKA_SERVICE_ADDR
         value: '{{ include "otel-demo.name" . }}-kafka:9092'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 20Mi
@@ -155,7 +165,7 @@ components:
       - name: FEATURE_FLAG_GRPC_SERVICE_ADDR
         value: '{{ include "otel-demo.name" . }}-featureflagservice:50053'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
       - name: OTLP_LOGS_EXPORTER
         value: otlp
     resources:
@@ -178,7 +188,7 @@ components:
       - name: REDIS_ADDR
         value: '{{ include "otel-demo.name" . }}-redis:6379'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 160Mi
@@ -211,7 +221,7 @@ components:
       - name: KAFKA_SERVICE_ADDR
         value: '{{ include "otel-demo.name" . }}-kafka:9092'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 20Mi
@@ -230,7 +240,7 @@ components:
       - name: CURRENCY_SERVICE_PORT
         value: "8080"
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 20Mi
@@ -269,7 +279,7 @@ components:
       - name: DATABASE_URL
         value: 'ecto://ffs:ffs@{{ include "otel-demo.name" . }}-ffspostgres:5432/ffs'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
       - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
         value: grpc
     resources:
@@ -294,7 +304,7 @@ components:
       - name: KAFKA_SERVICE_ADDR
         value: '{{ include "otel-demo.name" . }}-kafka:9092'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 200Mi
@@ -407,7 +417,7 @@ components:
       - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
         value: python
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 120Mi
@@ -429,17 +439,20 @@ components:
       imageF: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageG: "docker.io/chgray123/chgray_repro:dev20.04"
       imageA: "docker.io/library/nginx:latest"
-    command: ['sh', '-c', '/LookoutTower/LookoutTowerCollector']
+    command: ['sh', '-c', 'sleep 100000']
 
     useDefault:
       env: true
     service:
-      port: 8080
+      port: 4317
     env:
-      - name: PAYMENT_SERVICE_PORT
-        value: "8080"
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
+      - name: OTEL_CHAINED_EXPORTER_OTLP_ENDPOINT
+        value: http://$(OTEL_EXPORTER_CHAINED_NAME):4317
+      - name: OTEL_COLLECTOR_PORT_GRPC
+        value: $(OTEL_COLLECTOR_PORT_GRPC)
+
     resources:
       limits:
         memory: 1024Mi
@@ -454,7 +467,7 @@ components:
       - name: PAYMENT_SERVICE_PORT
         value: "8080"
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 120Mi
@@ -475,7 +488,7 @@ components:
       - name: FEATURE_FLAG_GRPC_SERVICE_ADDR
         value: '{{ include "otel-demo.name" . }}-featureflagservice:50053'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 20Mi
@@ -519,7 +532,7 @@ components:
       - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
         value: python
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
         memory: 500Mi            # This is high to enable supporting the recommendationCache feature flag use case
@@ -536,7 +549,7 @@ components:
       - name: QUOTE_SERVICE_ADDR
         value: 'http://{{ include "otel-demo.name" . }}-quoteservice:8080'
       - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317/v1/traces
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)/v1/traces
     resources:
       limits:
         memory: 20Mi
@@ -579,7 +592,7 @@ components:
       - name: KAFKA_ADVERTISED_LISTENERS
         value: 'PLAINTEXT://{{ include "otel-demo.name" . }}-kafka:9092'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://$(OTEL_COLLECTOR_NAME):4317
+        value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
       - name: KAFKA_HEAP_OPTS
         value: "-Xmx200M -Xms200M"
     resources:
@@ -609,12 +622,12 @@ components:
       runAsNonRoot: true
 
 opentelemetry-collector:
-  enabled: false
+  enabled: true
   nameOverride: otelcol
   mode: deployment
   presets:
     kubernetesAttributes:
-      enabled: false
+      enabled: true
   resources:
     limits:
       memory: 200Mi
@@ -622,9 +635,9 @@ opentelemetry-collector:
     type: ClusterIP
   ports:
     metrics:
-      enabled: false
+      enabled: true
     prometheus:
-      enabled: false
+      enabled: true
       containerPort: 9464
       servicePort: 9464
       protocol: TCP
