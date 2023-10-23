@@ -13,11 +13,11 @@ spec:
   template:
     metadata:
       labels:
-      
+
         {{- if .booger}}
         azure.workload.identity/use: "true"
         {{- end }}
-      
+
         {{- include "otel-demo.selectorLabels" . | nindent 8 }}
         {{- include "otel-demo.workloadLabels" . | nindent 8 }}
       {{- if .podAnnotations }}
@@ -53,6 +53,10 @@ spec:
           {{- else }}
           image: '{{ ((.imageOverride).repository) | default .defaultValues.image.repository }}:{{ ((.imageOverride).tag) | default (printf "%s-%s" (default .Chart.AppVersion .defaultValues.image.tag) (replace "-" "" .name)) }}'
           {{- end }}
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
 
           imagePullPolicy: {{ ((.imageOverride).pullPolicy) | default .defaultValues.image.pullPolicy }}
           {{- if .command }}

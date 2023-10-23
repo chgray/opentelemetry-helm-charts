@@ -9,7 +9,7 @@ default:
     - name: X_OTEL_COLLECTOR_NAME
       value: '10.17.164.217'
 
-    - name: X_OTEL_COLLECTOR_NAME
+    - name: OTEL_COLLECTOR_NAME
       value: '{{ include "otel-demo.name" . }}-lookoutTower'
 
     - name: OTEL_COLLECTOR_PORT_GRPC
@@ -444,12 +444,17 @@ components:
     useDefault:
       env: true
     service:
-      port: 4317
+      port: 14317
     env:
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
         value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
-      - name: OTEL_CHAINED_EXPORTER_OTLP_ENDPOINT
+
+      - name: OTEL_CHAINED_EXPORTER_OTLP_NAME
         value: http://$(OTEL_EXPORTER_CHAINED_NAME):4317
+
+      - name: OTEL_CHAINED_EXPORTER_OTLP_PORT
+        value: "4317"
+
       - name: OTEL_COLLECTOR_PORT_GRPC
         value: $(OTEL_COLLECTOR_PORT_GRPC)
 
@@ -471,10 +476,10 @@ components:
     resources:
       limits:
         memory: 120Mi
-    securityContext:
-      runAsUser: 1000  # node
-      runAsGroup: 1000
-      runAsNonRoot: true
+    #securityContext:
+    #  runAsUser: 1000  # node
+    #  runAsGroup: 1000
+    #  runAsNonRoot: true
 
   productCatalogService:
     enabled: true
