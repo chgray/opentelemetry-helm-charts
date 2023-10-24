@@ -438,8 +438,9 @@ components:
       imageE: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
       imageF: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageG: "docker.io/chgray123/chgray_repro:dev20.04"
-      imageA: "docker.io/library/nginx:latest"
-    command: ['sh', '-c', 'sleep 100000']
+      imageH: "docker.io/library/nginx:latest"
+    #command: ['sh', '-c', 'sleep 100000']
+    command: ['sh', '-c', '/LookoutTower/LookoutTowerCollector']
 
     useDefault:
       env: true
