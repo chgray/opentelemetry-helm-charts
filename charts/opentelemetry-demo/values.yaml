@@ -433,7 +433,7 @@ components:
       imageA: "ubuntu:latest"
       imageB: "localhost:32000/ubuntu.hi:latest"
       imageC: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.3"
-      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.4"
+      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.5"
       imageD: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageE: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
       imageF: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
