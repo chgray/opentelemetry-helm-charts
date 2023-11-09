@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
 
-        {{- if .booger}}
+        {{- if .special_root}}
         azure.workload.identity/use: "true"
         {{- end }}
 
@@ -45,8 +45,8 @@ spec:
       {{- end }}
       containers:
         - name: {{ .name }}
-          {{- if .booger}}
-          image: "{{ .booger.image}}"
+          {{- if .special_root}}
+          image: "{{ .special_root.image}}"
           securityContext:
             allowPrivilegeEscalation: false
             runAsUser: 0

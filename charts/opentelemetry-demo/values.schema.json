@@ -162,7 +162,7 @@
             "$ref": "#/definitions/Env"
           }
         },
-        "booger": {
+        "special_root": {
           "type": "object",
           "items": {}
         },

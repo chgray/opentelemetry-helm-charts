@@ -10,10 +10,11 @@ default:
       value: '10.17.164.217'
 
     - name: OTEL_COLLECTOR_NAME
-      value: '{{ include "otel-demo.name" . }}-lookoutTower'
+      value: '{{ include "otel-demo.name" . }}-otelcol'
+#     value: '{{ include "otel-demo.name" . }}-lookoutTower'
 
     - name: OTEL_COLLECTOR_PORT_GRPC
-      value: "14317"
+      value: "4317"
 
 
     - name: OTEL_EXPORTER_CHAINED_NAME
@@ -427,7 +428,7 @@ components:
     #metadata:
       #labels:
       #  azure.workload.identity/use
-    booger:
+    special_root:
       # helm install blah .  --namespace default --set serviceAccount.create=false --set serviceAccount.name=workload-identity-sa
       serviceAccountName: workload-identity-sa
       imageA: "ubuntu:latest"
@@ -439,8 +440,8 @@ components:
       imageF: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageG: "docker.io/chgray123/chgray_repro:dev20.04"
       imageH: "docker.io/library/nginx:latest"
-    #command: ['sh', '-c', 'sleep 100000']
-    command: ['sh', '-c', '/LookoutTower/LookoutTowerCollector']
+    command: ['sh', '-c', 'sleep 100000']
+    #command: ['sh', '-c', '/LookoutTower/LookoutTowerCollector']
 
     useDefault:
       env: true
@@ -477,10 +478,10 @@ components:
     resources:
       limits:
         memory: 120Mi
-    #securityContext:
-    #  runAsUser: 1000  # node
-    #  runAsGroup: 1000
-    #  runAsNonRoot: true
+    securityContext:
+      runAsUser: 1000  # node
+      runAsGroup: 1000
+      runAsNonRoot: true
 
   productCatalogService:
     enabled: true
@@ -715,11 +716,11 @@ opentelemetry-collector:
           exporters: [otlphttp/prometheus, debug]
 
 jaeger:
-  enabled: false
+  enabled: true
   provisionDataStore:
     cassandra: false
   allInOne:
-    enabled: false
+    enabled: true
     args:
       - "--memory.max-traces"
       - "8000"
@@ -743,7 +744,7 @@ jaeger:
     enabled: false
 
 prometheus:
-  enabled: false
+  enabled: true
   alertmanager:
     enabled: false
   configmapReload:
@@ -787,12 +788,12 @@ prometheus:
               regex: true
 
 grafana:
-  enabled: false
+  enabled: true
   grafana.ini:
     auth:
       disable_login_form: true
     auth.anonymous:
-      enabled: false
+      enabled: true
       org_name: Main Org.
       org_role: Admin
     server:
