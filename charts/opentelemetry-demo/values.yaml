@@ -7,7 +7,7 @@ default:
           apiVersion: v1
           fieldPath: "metadata.labels['app.kubernetes.io/component']"
     - name: OTEL_COLLECTOR_NAME
-      value: '172.30.241.217'
+      value: '{{ include "otel-demo.name" . }}-otelcol'
     - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       value: cumulative
     - name: OTEL_RESOURCE_ATTRIBUTES
@@ -577,7 +577,7 @@ components:
       runAsNonRoot: true
 
 opentelemetry-collector:
-  enabled: false
+  enabled: true
   nameOverride: otelcol
   mode: deployment
   presets:
