@@ -424,12 +424,16 @@ components:
         memory: 120Mi
 
   lookoutTower:
-    enabled: true
+    enabled: false
     #metadata:
       #labels:
       #  azure.workload.identity/use
     special_root:
       # helm install blah .  --namespace default --set serviceAccount.create=false --set serviceAccount.name=workload-identity-sa
+      # start kubectl port-forward svc/blah-prometheus-server 1235:9090
+      # start kubectl port-forward svc/blah-frontendproxy 8080:8080
+      # start kubectl port-forward svc/blah-otelcol 1234:4318
+
       serviceAccountName: workload-identity-sa
       imageA: "ubuntu:latest"
       imageB: "localhost:32000/ubuntu.hi:latest"
@@ -656,6 +660,8 @@ opentelemetry-collector:
     receivers:
       otlp:
         protocols:
+          grpc:
+            endpoint: 127.0.0.1:4318
           http:
             # Since this collector needs to receive data from the web, enable cors for all origins
             # `allowed_origins` can be refined for your deployment domain
