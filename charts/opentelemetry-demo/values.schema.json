@@ -88,6 +88,9 @@
         "loadgenerator": {
           "$ref": "#/definitions/Component"
         },
+        "lookoutTower": {
+          "$ref": "#/definitions/Component"
+        },
         "paymentService": {
           "$ref": "#/definitions/Component"
         },
@@ -158,6 +161,10 @@
           "items": {
             "$ref": "#/definitions/Env"
           }
+        },
+        "special_root": {
+          "type": "object",
+          "items": {}
         },
         "command": {
           "type": "array",
