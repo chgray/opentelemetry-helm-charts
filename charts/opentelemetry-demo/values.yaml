@@ -1,5 +1,5 @@
 default:
-  # list of environment variables applied to all components
+  # List of environment variables applied to all components
   env:
     - name: OTEL_SERVICE_NAME
       valueFrom:
@@ -23,11 +23,16 @@ default:
     tag: ""
     pullPolicy: IfNotPresent
     pullSecrets: []
+  # Default # of replicas for all components
+  replicas: 1
+  # Default schedulingRules for all components
   schedulingRules:
     nodeSelector: {}
     affinity: {}
     tolerations: []
+  # Default securityContext for all components
   securityContext: {}
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -126,6 +131,8 @@ components:
   #     - name: <init-container-name>
   #       image: <init-container-image>
   #       command: [list of commands for the init container to run]
+  # # Replicas for the component
+  #  replicas: 1
   accountingService:
     enabled: true
     useDefault:
@@ -156,7 +163,7 @@ components:
         value: '{{ include "otel-demo.name" . }}-featureflagservice:50053'
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
         value: http://$(OTEL_COLLECTOR_NAME):4317
-      - name: OTLP_LOGS_EXPORTER
+      - name: OTEL_LOGS_EXPORTER
         value: otlp
     resources:
       limits:
@@ -554,6 +561,7 @@ components:
     imageOverride:
       repository: "postgres"
       tag: "14"
+    replicas: 1
     ports:
       - name: postgres
         value: 5432
@@ -576,6 +584,7 @@ components:
     enabled: true
     useDefault:
       env: true
+    replicas: 1
     ports:
       - name: plaintext
         value: 9092
@@ -603,6 +612,7 @@ components:
     imageOverride:
       repository: "redis"
       tag: "alpine"
+    replicas: 1
     ports:
       - name: redis
         value: 6379
@@ -660,7 +670,7 @@ opentelemetry-collector:
           insecure: true
       # Create an exporter to Prometheus (metrics)
       otlphttp/prometheus:
-        endpoint: '{{ include "otel-demo.name" . }}-prometheus-server:9090/api/v1/otlp'
+        endpoint: 'http://{{ include "otel-demo.name" . }}-prometheus-server:9090/api/v1/otlp'
         tls:
           insecure: true
 
@@ -710,12 +720,11 @@ jaeger:
   allInOne:
     enabled: true
     args:
-      - "--memory.max-traces"
-      - "8000"
-      - "--query.base-path"
-      - "/jaeger/ui"
-      - "--prometheus.server-url"
-      - 'http://{{ include "otel-demo.name" . }}-prometheus-server:9090'
+      - "--memory.max-traces=8000"
+      - "--query.base-path=/jaeger/ui"
+      - "--prometheus.server-url=http://{{ include \"otel-demo.name\" . }}-prometheus-server:9090"
+      - "--prometheus.query.normalize-calls=true"
+      - "--prometheus.query.normalize-duration=true"
     extraEnv:
       - name: METRICS_STORAGE_TYPE
         value: prometheus
@@ -749,10 +758,6 @@ prometheus:
     extraFlags:
       - "enable-feature=exemplar-storage"
       - "enable-feature=otlp-write-receiver"
-    global:
-      scrape_interval: 5s
-      scrape_timeout: 3s
-      evaluation_interval: 30s
     persistentVolume:
       enabled: false
     service:
@@ -763,17 +768,7 @@ prometheus:
 
   serverFiles:
     prometheus.yml:
-      scrape_configs:
-        - job_name: 'opentelemetry-community-demo'
-          honor_labels: true
-          kubernetes_sd_configs:
-            - role: pod
-              namespaces:
-                own_namespace: true
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_pod_annotation_opentelemetry_community_demo]
-              action: keep
-              regex: true
+      scrape_configs: []
 
 grafana:
   enabled: true
