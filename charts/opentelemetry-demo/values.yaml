@@ -418,21 +418,23 @@ components:
     resources:
       limits:
         memory: 120Mi
+
+
   lookoutTower:
     enabled: true
     #metadata:
       #labels:
       #  azure.workload.identity/use
     special_root:
-      # helm install blah .  --namespace default --set serviceAccount.create=false --set serviceAccount.name=workload-identity-sa
+      # helm install blah . --namespace default --set serviceAccount.create=false --set serviceAccount.name=workload-identity-sa
       #start kubectl port-forward svc/blah-prometheus-server 9090:9090
       #start kubectl port-forward svc/blah-frontendproxy 8080:8080
       #start kubectl port-forward svc/blah-otelcol 4317:4317
       serviceAccountName: workload-identity-sa
-      imageA: "ubuntu:latest"
+      image: "ubuntu:latest"
       imageB: "localhost:32000/ubuntu.hi:latest"
       imageC: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.3"
-      image:  "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.6"
+      #image:  "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.7"
       imageD: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageE: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
       imageF: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
@@ -443,7 +445,8 @@ components:
     useDefault:
       env: true
     service:
-      port: 14317
+      port: 22
+
     env:
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
         value: http://$(OTEL_COLLECTOR_NAME):$(OTEL_COLLECTOR_PORT_GRPC)
@@ -455,7 +458,7 @@ components:
         value: $(OTEL_COLLECTOR_PORT_GRPC)
     resources:
       limits:
-        memory: 1024Mi
+        memory: 512Mi
 
   paymentService:
     enabled: true
