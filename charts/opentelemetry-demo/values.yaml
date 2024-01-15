@@ -431,15 +431,15 @@ components:
       #start kubectl port-forward svc/blah-frontendproxy 8080:8080
       #start kubectl port-forward svc/blah-otelcol 4317:4317
       serviceAccountName: workload-identity-sa
-      #image: "ubuntu:latest"
+      image: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev-mariner.15"
       imageB: "localhost:32000/ubuntu.hi:latest"
       imageC: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.3"
-      image:  "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.10"
+      #image:  "chgraypocotdtacr.azurecr.io/chgray123/chgray_repro:dev22.04.10"
       imageD: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageE: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev20.04"
       imageF: "chgraypocotdtacr.azurecr.io/chgray123/chgray_repo:dev22.04.2"
       imageG: "docker.io/chgray123/chgray_repro:dev20.04"
-      imageH: "docker.io/library/nginx:latest"
+      imageH: "docker.io/library/nginx:latest"      
     #command: ['sh', '-c', 'sleep 220000']
     command: ['sh', '-c', '/LookoutTower/LookoutTowerCollector']
     useDefault:
